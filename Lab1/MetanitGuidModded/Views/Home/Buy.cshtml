@@ -1,0 +1,34 @@
+﻿
+@{
+    ViewBag.Title = "Book Purchase";
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Book Purchase</title>
+</head>
+<body>
+    <div>
+        <h3>Purchase form</h3>
+        <form method="post" action="">
+            <input type="hidden" value="@ViewBag.BookId" name="BookId" />
+            <table>
+                <tr>
+                    <td><p>Enter Your Name </p></td>
+                    <td><input type="text" name="Person" /> </td>
+                </tr>
+                <tr>
+                    <td><p>Enter Address :</p></td>
+                    <td>
+                        <input type="text" name="Address" />
+                    </td>
+                </tr>
+                <tr><td><input type="submit" value="Save" /> </td><td></td></tr>
+            </table>
+        </form>
+    </div>
+</body>
+</html>
+
