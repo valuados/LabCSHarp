@@ -89,7 +89,11 @@ namespace MetanitGuidModded.Controllers
         {
             if(id>5)
             {
-                return Redirect("/Home/Contact");
+                //return RedirectToRoute(new { controller = "Home", action = "Contact"});
+                //return RedirectToAction("Square", "Home", new { a = 10, h = 12 });
+                return new HttpStatusCodeResult(404); //return HttpNotFound();
+                //return new HttpUnauthorizedResult();
+
             }
             return View("About");
             
