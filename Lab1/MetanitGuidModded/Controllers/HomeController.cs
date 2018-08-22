@@ -3,8 +3,10 @@ using MetanitGuidModded.Models.BookStore;
 using MetanitGuidModded.Util;
 using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
 
@@ -28,6 +30,14 @@ namespace MetanitGuidModded.Controllers
                 "apples", "oranges", "bananas"
             };
             return View();
+        }
+
+        // asynchronous method
+        public async Task<ActionResult> BookList()
+        {
+            IEnumerable<Book> books = await db.Books.ToListAsync();
+            ViewBag.Books = books;
+            return View("Index");
         }
         [HttpGet]
         public ActionResult Buy(int id)
@@ -101,19 +111,19 @@ namespace MetanitGuidModded.Controllers
             return View("About");
 
         }
-        // Отправка массива байтов
+        // Sending byte array
         public FilePathResult GetFile()
         {
-            // Путь к файлу
+            // File path
             string file_path = Server.MapPath("~/Files/Apps.txt");
             //string file_path2 = "C://files//custom.txt
-            // Тип файла - content-type
+            // file type - content-type
             string file_type = "application/octet-stream";//Universal file type
-            // Имя файла - необязательно
+            // File mane - not required
             string file_name = "Apps.txt";
             return File(file_path, file_type, file_name);
         }
-        // Отправка массива байтов
+        // Sending byte array
         public FileResult GetBytes()
         {
             string path = Server.MapPath("~/Files/Apps.txt");
@@ -122,11 +132,11 @@ namespace MetanitGuidModded.Controllers
             string file_name = "Apps.txt";
             return File(mas, file_type, file_name);
         }
-        // Отправка потока
+        // Sending thread
         public FileResult GetStream()
         {
             string path = Server.MapPath("~/Files/Apps.txt");
-            // Объект Stream
+            // Object Stream
             FileStream fs = new FileStream(path, FileMode.Open);
             string file_type = "application/octet-stream";
             string file_name = "Apps.txt";
