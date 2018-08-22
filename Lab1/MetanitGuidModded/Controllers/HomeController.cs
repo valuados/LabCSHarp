@@ -3,6 +3,7 @@ using MetanitGuidModded.Models.BookStore;
 using MetanitGuidModded.Util;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -14,6 +15,8 @@ namespace MetanitGuidModded.Controllers
         BookContext db = new BookContext();
         public ViewResult Index()
         {
+            Session["name"] = "Tom";
+            HttpContext.Response.Cookies["id"].Value = "ca-4353w";
             var books = db.Books;
             ViewBag.Books = books;
 
@@ -87,7 +90,7 @@ namespace MetanitGuidModded.Controllers
         }
         public ActionResult GetVoid(int id)
         {
-            if(id>5)
+            if (id > 5)
             {
                 //return RedirectToRoute(new { controller = "Home", action = "Contact"});
                 //return RedirectToAction("Square", "Home", new { a = 10, h = 12 });
@@ -96,7 +99,54 @@ namespace MetanitGuidModded.Controllers
 
             }
             return View("About");
-            
+
+        }
+        // Отправка массива байтов
+        public FilePathResult GetFile()
+        {
+            // Путь к файлу
+            string file_path = Server.MapPath("~/Files/Apps.txt");
+            //string file_path2 = "C://files//custom.txt
+            // Тип файла - content-type
+            string file_type = "application/octet-stream";//Universal file type
+            // Имя файла - необязательно
+            string file_name = "Apps.txt";
+            return File(file_path, file_type, file_name);
+        }
+        // Отправка массива байтов
+        public FileResult GetBytes()
+        {
+            string path = Server.MapPath("~/Files/Apps.txt");
+            byte[] mas = System.IO.File.ReadAllBytes(path);
+            string file_type = "application/octet-stream";
+            string file_name = "Apps.txt";
+            return File(mas, file_type, file_name);
+        }
+        // Отправка потока
+        public FileResult GetStream()
+        {
+            string path = Server.MapPath("~/Files/Apps.txt");
+            // Объект Stream
+            FileStream fs = new FileStream(path, FileMode.Open);
+            string file_type = "application/octet-stream";
+            string file_name = "Apps.txt";
+            return File(fs, file_type, file_name);
+        }
+        public void GetContext()
+        {
+            HttpContext.Response.Write("This is Response Text");
+            string browser = HttpContext.Request.Browser.Browser;
+            string user_agent = HttpContext.Request.UserAgent;
+            string url = HttpContext.Request.RawUrl;
+            string ip = HttpContext.Request.UserHostAddress;
+            string referrer = HttpContext.Request.UrlReferrer == null ? "" : HttpContext.Request.UrlReferrer.AbsoluteUri;
+            HttpContext.Response.Write("<p>Browser: " + browser + "</p><p>User-Agent: " + user_agent + "</p><p>Request URL: " + url +
+                "</p><p>Referrer: " + referrer + "</p><p>IP-address: " + ip + "</p>");
+        }
+        public string GetCookieAndSessionData()
+        {
+            string id = HttpContext.Request.Cookies["id"].Value;
+            return id.ToString() + " " + Session["name"];
         }
     }
 }
